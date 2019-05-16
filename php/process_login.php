@@ -1,37 +1,30 @@
-<?php 
-include('../common/utils.php');
-if($_POST) {
-	if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-
-		$sql = "SELECT *
-		FROM user
-		WHERE username='$username'
-		AND password=MD5('$password')";
-
-		$res = $conn->query($sql);
-
-		if ($conn->error) {
-			redirect('../login.php?error_message=Ocurrió un error: ' . $conn->error);
-		}
-
-		if($res->num_rows > 0) {
-				while ($row = $res->fetch_assoc()) {
-					$_SESSION['user'] = [
-						'username' => $row['username'],
-						'id' => $row['id']
-					];
-					redirect('../home.php');
-				}
-		} else {
-			redirect('../login.php?error_message=Usuario o clave incorrectos!');
-		}
-
-
-	} else {
-		redirect('../login.php?error_message=Ingrese todos los datos!');
-	}
-} else {
-	redirect('../login.php');
-}
+<?php
+if(isset($_POST['username']) && isset($_POST['password'])){
+     $username = $_POST['username'];
+     $password = $_POST['password'];
+    $conn = new mysqli('localhost','root','','pruebab1');
+    $sql_insert = "SELECT * FROM tienda WHERE username = '$username' AND password=MD5('$password')";
+    $res=$conn->query($sql_insert);
+    if($conn->error){
+        echo $sql_insert;
+        header('Location: ../index.php?error_message=Ocurrio un error: ' . $conn->error);
+        exit;
+    }
+    
+    if($res->num_rows > 0){
+        while($row = $res-> fetch_assoc()){
+            session_start();
+            $_SESSION['user'] = ['username' =>$row['Ssername'], 'id'=>$row['id_tienda'], 'tienda'=>$row['Nombre_Tienda']];
+            header('Location: ../paginas/inicio.php');
+            exit;
+        }
+        
+    }else{
+        header('Location: ../index.php?error_message=Usuario o contraseña incorrectos.!');
+        exit;
+    }
+ }else{
+    header('Location: ../index.php');
+    exit;
+ }
+?>

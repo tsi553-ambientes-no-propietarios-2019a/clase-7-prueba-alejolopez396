@@ -1,35 +1,37 @@
 <?php
-//include('common/utils.php')
+if($_GET) {
+$confirmacion =$_GET['error_message'];
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Registro</title>
+    <title>Login</title>
 </head>
 <body>
-	<h1>Registro de Tiendas</h1>
+    <h1>Login</h1>
 
-<?php if(isset($error_message)) { ?>
-	<div><strong><?php echo $error_message; ?></strong></div>
-<?php } ?>
-	<form action="php/process_registration.php" method="post">
-		Nombre de tienda: <br />
-        <input type="text" name="nombre"/>
-        <p>
-         Direccion: <br />
-        <input type="text" name="direccion"/>
-        <p>
-        Usuario: <br />
-        <input type="text" name="username"/>
+    <form action="php/process_login.php" method="post">
+    	Usuario: <br />
+        <input type="text" name="username" placeholder="ingrese su usuario">
         <p>    
-		Clave: <br />
-        <input type="password" name="password"/>
+        Clave: <br />
+        <input type="password" name="password" placeholder="ingrese su contraseña">
         <p>
-        Confirmar Clave: <br />
-        <input type="password" name="password2"  />
-        <p>
-		<button>Registrarme!</button>
-	</form>
+        <button>Ingresar</button>
+    </form>
+    <form action="registro_tienda.php" method="post">
+    	 <button>Registrar mi tienda</button>
+    	 <br>
+    	         
+   	<?php
+        if ($_GET) {
+           echo $confirmacion;
+        }
+            
+        ?>
+
+    </form>
 </body>
 </html>
